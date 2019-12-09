@@ -35,18 +35,20 @@ export default withRouter(function(props){
 
   return (
     <div className="LandingPage">
-      <Suspense fallback={<div>正在加载桌面信息...</div>}>
-        <DeskInfo did={did} />
-      </Suspense>
-      <h2>请选择点餐人数</h2>
-      <ul className="custom-count">
-        {
-          [1,2,3,4,5,6,7,8].map(val => {
-            return <li key={val} className={count === val ? 'active': null} onClick={()=>useCount(val)}>{val}</li>
-          })
-        }
-      </ul>
-      <Button onClick={startOrder}>开始点餐</Button>
+      <div className="LandingPageBox">
+        <Suspense fallback={<div>正在加载桌面信息...</div>}>
+          <DeskInfo did={did} />
+        </Suspense>
+        <h2>请选择点餐人数</h2>
+        <ul className="custom-count">
+          {
+            [1,2,3,4,5,6,7,8].map(val => {
+              return <li key={val} className={count === val ? 'active': null} onClick={()=>useCount(val)}>{val}</li>
+            })
+          }
+        </ul>
+        <Button onClick={startOrder}>开始点餐</Button>
+      </div>
     </div>
   )
 })

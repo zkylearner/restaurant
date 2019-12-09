@@ -44,7 +44,7 @@ function CartItem({cart}){
 }
 
 function go(anchorName){
-  console.log(anchorName)
+  // console.log(anchorName)
   if (anchorName) {
     let anchorElement = document.getElementById(anchorName);
     if(anchorElement) { anchorElement.scrollIntoView() }
@@ -230,7 +230,7 @@ export default class FoodCart extends Component {
   }
 
   order = () => {
-    console.log('下单')
+    // console.log('下单')
     let from = {
       deskName: this.state.deskInfo.name,
       totalPrice: getTotalPrice(this.state.cart),

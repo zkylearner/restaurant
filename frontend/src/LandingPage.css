@@ -1,6 +1,6 @@
 .LandingPage{
   text-align: center;
-  margin-top: 30%;
+  height: 100%;
 }
 .LandingPage .active{
   color: red;
@@ -16,4 +16,11 @@
   margin: 5px;
   border: 2px solid;
   border-radius: 0.2em;
+}
+.LandingPageBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
 }
