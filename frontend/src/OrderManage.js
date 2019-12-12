@@ -89,7 +89,7 @@ export default class OrderManage extends Component {
             return <OrderItem onDelete={this.onDelete} key={order.id} order={order} />
           })
           :
-          <div>暂无订单</div>
+          <div></div>
         }
       </div>
     )

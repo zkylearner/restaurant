@@ -120,7 +120,7 @@ export default class DeskManage extends Component {
               return <DeskItem onDelete={this.onDelete} key={desk.id} desk={desk} />
             })
             :
-            <div>暂无桌面</div>
+            <div></div>
           }
         </div>
         <div className='QRcodeBox hidden'>

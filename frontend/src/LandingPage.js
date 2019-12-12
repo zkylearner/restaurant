@@ -3,7 +3,6 @@ import { Button } from 'antd'
 import {withRouter} from 'react-router-dom'
 import api from "./api"
 import createFetcher from './create-fetcher'
-import './LandingPage.css'
 
 var fetcher = createFetcher((did) => {
   return api.get('/deskinfo/' + did)

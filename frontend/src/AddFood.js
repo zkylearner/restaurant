@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { withRouter } from 'react-router-dom'
 import api from './api'
 import history from './history'
+import { Button, Input } from 'antd'
 
 export default withRouter(function AddFood(props){
   let rid = props.match.params.rid
@@ -48,14 +49,14 @@ export default withRouter(function AddFood(props){
     <div className='addFoodCard'>
       <h3>添加菜品</h3>
       <ul>
-        <li>名称：<input type='text' onChange={change} name="name" /></li>
-        <li>价格：<input type='text' onChange={change} name="price" /></li>
-        <li>分类：<input type='text' onChange={change} name="category" /></li>
-        <li>描述：<input type='text' onChange={change} name="desc" /></li>
+        <li>名称：<Input type='text' onChange={change} name="name" /></li>
+        <li>价格：<Input type='text' onChange={change} name="price" /></li>
+        <li>分类：<Input type='text' onChange={change} name="category" /></li>
+        <li>描述：<Input type='text' onChange={change} name="desc" /></li>
         <li>图片：<input type='file' onChange={imgChange} name="img" /></li>
       </ul>
-      <button onClick={() => {history.push(`/restaurant/${rid}/manage/food` ) }}>返回</button>
-      <button onClick={submit}>提交</button>
+      <Button onClick={() => {history.push(`/restaurant/${rid}/manage/food` ) }}>返回</Button>
+      <Button onClick={submit}>提交</Button>
     </div>
   )
 })

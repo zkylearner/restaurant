@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { withRouter } from 'react-router-dom'
 import api from './api'
 import history from './history'
+import { Button, Input } from 'antd'
 
 export default withRouter(function AddFood(props){
   let rid = props.match.params.rid
@@ -36,11 +37,11 @@ export default withRouter(function AddFood(props){
     <div className='addFoodCard'>
       <h3>添加桌面</h3>
       <ul>
-        <li>名称：<input type='text' onChange={change} name="name" /></li>
-        <li>容纳人数：<input type='number' onChange={change} name="capacity" /></li>
+        <li>桌面名称：<Input type='text' onChange={change} name="name" /></li>
+        <li>容纳人数：<Input type='number' onChange={change} name="capacity" /></li>
       </ul>
-      <button onClick={() => {history.goBack()}}>返回</button>
-      <button onClick={submit}>提交</button>
+      <Button onClick={() => {history.goBack()}}>返回</Button>
+      <Button onClick={submit}>提交</Button>
     </div>
   )
 })

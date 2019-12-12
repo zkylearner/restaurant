@@ -8,7 +8,7 @@ import AddDesk from './AddDesk'
 import api from './api'
 import createFetcher from './create-fetcher'
 import history from './history'
-import { Menu } from 'antd';
+import { Button } from 'antd';
 
 const userInfoFetcher = createFetcher(async () => {
   return api.get('/userinfo')
@@ -22,8 +22,8 @@ const userInfoFetcher = createFetcher(async () => {
 function RestaurantInfo(){
   var info = userInfoFetcher.read().data
   return(
-    <div className='show-area-title'>
-      <h3>{info && info.title}</h3>
+    <div className='drName'>
+      <span title='dining room name'>{info && info.title}</span>
     </div>
   )
 }
@@ -34,28 +34,29 @@ export default withRouter(function(props){
     userInfoFetcher.clearCache()
     props.history.push('/')
   }
-
+  
   return (
     <div className='show-area'>
-      <Suspense fallback={<div>loading...</div>}>
-        <RestaurantInfo />
-      </Suspense>
+      <div className='show-area-title'>
+        <p>后台管理系统</p>
+        <Button className='logout' onClick={logout}>退出</Button>
+      </div>
       <div className='show-area-content'>
         <aside>
-          <Menu mode="inline" style={{height:'100%', width:'150px'}}>
-            <Menu.Item key="order">
+          <ul mode="inline" className='system-menu'>
+            <Suspense fallback={<div className='drName'>loading...</div>}>
+              <RestaurantInfo />
+            </Suspense>
+            <li>
               <Link to='order'>订单管理</Link>
-            </Menu.Item>
-            <Menu.Item key="food">
+            </li>
+            <li>
               <Link to='food'>菜品管理</Link>
-            </Menu.Item>
-            <Menu.Item key="desk">
+            </li>
+            <li>
               <Link to='desk'>桌面管理</Link>
-            </Menu.Item>
-            <Menu.Item key="exit">
-              <span onClick={()=>logout()}>退出</span>
-            </Menu.Item>
-          </Menu>
+            </li>
+          </ul>
         </aside>
         <main>
           <Switch>

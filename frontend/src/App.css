@@ -196,17 +196,32 @@ ul{
   height: 150px;
   display: block;
 }
+
+/* restaurantManage */
 .show-area-title{
-  border-bottom: 1px solid #e8e8e8;
+  background: #22242a;
+  /* border-bottom: 1px solid #e8e8e8; */
   padding: 5px;
+  height: 50px;
+  text-indent: 1em;
+  font-size: 24px;
+  color: white;
+}
+.show-area .logout{
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px;
+  margin: 10px 20px;
+  cursor: pointer;
+  width: 70px;
   height: 30px;
-  text-indent: 2em;
 }
 .show-area-content{
   width: 100%;
   position: absolute;
   bottom: 0;
-  top: 30px;
+  top: 50px;
 }
 .show-area-content aside{
   position: absolute;
@@ -214,6 +229,65 @@ ul{
   bottom: 0;
   top: 0;
 }
+.show-area-content .system-menu{
+  height:100%;
+  width:150px;
+  background: #2f323a;
+  color: #fff;
+  margin-bottom: 0;
+}
+.show-area-content .system-menu li a{
+  color: #fff;
+  width: 134px;
+  padding: 12px 8px;
+  display: inline-block;
+}
+.show-area-content .system-menu li{
+  margin: 0 8px 5px;
+  font-size: 16px;
+}
+.show-area-content .system-menu li:hover{
+  background: #4ECDC4;
+}
+.show-area-content .system-menu .drName{
+  padding: 12px 8px;
+  margin: 0 8px 5px;
+  font-size: 16px;
+}
 .show-area-content main{
   margin-left: 150px;
+}
+.addFoodCard{
+  margin: 15px;
+}
+.addFoodCard input{
+  width: 200px;
+}
+
+/* LandingPage */
+.LandingPage{
+  text-align: center;
+  height: 100%;
+}
+.LandingPage .active{
+  color: red;
+}
+.LandingPage .custom-count {
+  width: 200px;
+  margin: 10px auto;
+  cursor: pointer;
+}
+.LandingPage .custom-count li{
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px;
+  border: 2px solid;
+  border-radius: 0.2em;
+}
+.LandingPageBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
 }
