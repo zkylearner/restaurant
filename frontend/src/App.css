@@ -77,6 +77,7 @@ ul{
 }
 
 /* FoodCart.js */
+
 .foodMBox{
   width:240px;
   height: 120px;
@@ -111,6 +112,11 @@ ul{
   object-fit: cover;
 }
 
+.foodCardBox{
+  width: 100%;
+  max-width: 400px;
+}
+
 .foodWindow{
   height: 100%;
   display: flex;
@@ -121,6 +127,7 @@ ul{
 .foodWindow aside{
   width: 20%;
   padding:5px;
+  font-size: 18px;
 }
 
 .foodWindow main{
@@ -206,6 +213,10 @@ ul{
   text-indent: 1em;
   font-size: 24px;
   color: white;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  position: fixed;
 }
 .show-area .logout{
   position: absolute;
@@ -224,10 +235,10 @@ ul{
   top: 50px;
 }
 .show-area-content aside{
-  position: absolute;
+  position: fixed;
   left:0;
   bottom: 0;
-  top: 0;
+  top: 50px;
 }
 .show-area-content .system-menu{
   height:100%;
@@ -290,4 +301,11 @@ ul{
   justify-content: center;
   flex-direction: column;
   height: 100%;
+}
+
+.order-details ul li{
+  display: flex;
+}
+.order-details ul li span{
+  flex: 1;
 }

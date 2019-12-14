@@ -12,7 +12,7 @@ function MenuItem({food, onUpdate, amount}){
   }
 
   return (
-    <div className='foodMBox'>
+    <div className='foodMBox foodCardBox'>
       <img src={window.baseURL + 'upload/' + food.img} alt={food.name}></img>
       <h3>{food.name}</h3>
       <p>{food.desc}</p>
@@ -112,8 +112,8 @@ function MenuInfo({menu, cart, cartChange}){
       if (currFoodCartItem) {
         currentAmount = currFoodCartItem.amount
       }
-      return <MenuItem key={food.id} food={food} amount={currentAmount}
-        onUpdate={cartChange} />
+      return food.status ? <MenuItem key={food.id} food={food} amount={currentAmount}
+        onUpdate={cartChange} /> : <div key={food.id}></div>
     })
     res.unshift(<h3 key={ary[0]} id={ary[0]} >{key}</h3>)
     // console.log(res)
@@ -153,7 +153,10 @@ export default class FoodCart extends Component {
       let categoryMapObj = {}
       let menuData = res.data
       let count = 0
+      
       menuData.forEach(food => {
+        // 过滤掉下架的菜品
+        if(!food.status)return
         let key = food.category
         if(!categoryMapObj[key]){
           categoryMapObj[key] = 'category' + ++count
@@ -161,7 +164,6 @@ export default class FoodCart extends Component {
         }
         menuObj[categoryMapObj[key]].push(food)
       })
-      // console.log(menuObj, categoryMapObj)
       this.setState({
         menu: menuObj,
         categoryMap: categoryMapObj,

@@ -108,7 +108,6 @@ app.post('/restaurant/:rid/desk/:did/order', async(req, res, next) =>{
   deskCartMap.set(desk, [])
   ioServer.emit('new order', order)
   ioServer.in(desk).emit('placeorder success', order)
-
 })
 
 //订单管理
@@ -122,6 +121,11 @@ app.route('/restaurant/:rid/order')
   })
 
 app.route('/restaurant/:rid/order/:oid')
+  .get(async (req, res, next) => {
+    let {rid, oid} = req.params
+    var order = await db.all('SELECT * FROM orders WHERE rid = ? and id=?', req.cookies.id, oid)
+    res.json(order)
+  })
   .delete(async (req, res, next) => {
     let {rid, oid} = req.params
     let order = await db.get(`select * from orders where rid=? and id=?`, rid, oid)

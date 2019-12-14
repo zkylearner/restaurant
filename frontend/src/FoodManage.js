@@ -11,7 +11,12 @@ function FoodItem({food, obj:{foods,setFoods}}){
     var data = new FormData()
     for(var key in fd) {
       var val = fd[key]
-      if(val)data.append(key, val)
+      if(key === 'status'){
+        // 布尔值转数字
+        data.append(key, +val)
+      }else{
+        if(val)data.append(key, val)
+      }
     }
     api.put(`/restaurant/${food.rid}/food/${food.id}`, data)
     .then(res=>{
@@ -101,7 +106,6 @@ export default withRouter(function(props){
   let rid = props.match.params.rid
 
   useEffect(() => {
-    // console.log('effect')
     api.get(`/restaurant/${rid}/food`).then(res => {
       setFoods(res.data)
     })

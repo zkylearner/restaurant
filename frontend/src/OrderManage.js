@@ -11,10 +11,36 @@ var orderItemStyle = {
 
 function OrderItem({order, onDelete}) {
   let [orderInfo, setOrder] = useState(order)
+  let [show, setShow] = useState(false)
   let status = ['pending', 'confirmed', 'completed']
 
+  function OrderDetails(){
+    return(
+      <div className='order-details'>
+        <ul>
+          <li>
+            <span>菜品</span>
+            <span>价格</span>
+            <span>数量</span>
+          </li>
+          {
+            Object.values(orderInfo.details).map(it => {
+              return (
+                <li key={it.food.id}>
+                  <span>{it.food.name}</span>
+                  <span>{it.food.price}</span>
+                  <span>{it.amount}</span>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
+    )
+  }
+
   function changeStatus(statu){
-    api.put(`/restaurant/1/order/${order.id}/status`, {
+    api.put(`/restaurant/${order.rid}/order/${order.id}/status`, {
       status: statu
     }).then(() => {
       setOrder({
@@ -25,7 +51,7 @@ function OrderItem({order, onDelete}) {
   }
 
   function deleteOrder() {
-    api.delete(`/restaurant/1/order/${order.id}`).then(() => {
+    api.delete(`/restaurant/${order.rid}/order/${order.id}`).then(() => {
       onDelete(order)
     }).catch(e => console.log(e))
   }
@@ -37,11 +63,12 @@ function OrderItem({order, onDelete}) {
         <p>人数：{orderInfo.customCount}</p>
         <p>订单状态：{orderInfo.status}</p>
         <div>
-          <Button>打印</Button>
+          <Button onClick={() => {setShow(!show)}}>详情</Button>
           <Button onClick={() => changeStatus(status[1])}>确认</Button>
           <Button onClick={() => changeStatus(status[2])}>完成</Button>
           <Button onClick={deleteOrder}>删除</Button>
         </div>
+        {show ? <OrderDetails /> : ''}
       </Card>
     </div>
   )
@@ -66,7 +93,7 @@ export default class OrderManage extends Component {
       }))
     })
     
-    api.get('/restaurant/1/order').then(res => {
+    api.get(`/restaurant/1/order`).then(res => {
       this.setState(produce(state => {
         state.orders = res.data
       }))
@@ -84,12 +111,10 @@ export default class OrderManage extends Component {
   render() {
     return(
       <div style={{display:'flex', flexWrap:'wrap'}}>
-        {this.state.orders.length > 0 ?
+        {
           this.state.orders.map(order => {
             return <OrderItem onDelete={this.onDelete} key={order.id} order={order} />
           })
-          :
-          <div></div>
         }
       </div>
     )
