@@ -1,15 +1,16 @@
-const express = require('express')
+const express = require("express")
+const sentenceList = require("./data")
 
 let db
-const dbPromise = require('./db')
-dbPromise.then(dbObject => {
+const dbPromise = require("./db")
+dbPromise.then((dbObject) => {
   db = dbObject
 })
 let port = 8080
 
 const app = express.Router()
 
-app.get('/userinfo', async (req, res, next) => {
+app.get("/userinfo", async (req, res, next) => {
   // console.log(req.cookies)
   let id = req.cookies.id
   let user = await db.get(`select title from users where id=?`, id)
@@ -18,7 +19,7 @@ app.get('/userinfo', async (req, res, next) => {
   } else {
     res.status(404).json({
       code: -1,
-      msg: '餐厅信息请求错误'
+      msg: "餐厅信息请求错误"
     })
   }
 })
@@ -48,30 +49,34 @@ app.get("/", (req, res, next) => {
 })
 
 // 登陆页面
-app.route('/login')
-  .post(async (req, res, next) => {
-    // console.log(req.body)
-    let userInfo = req.body
-    let user = await db.get("select id from users where name=? and password=?", userInfo.name, userInfo.password)
+app.route("/login").post(async (req, res, next) => {
+  // console.log(req.body)
+  let userInfo = req.body
+  let user = await db.get(
+    "select id from users where name=? and password=?",
+    userInfo.name,
+    userInfo.password
+  )
 
-    if (user) {
-      // 需要添加cookies
-      // res.cookie('id', user.id, {
-      //   signed: true
-      // })
-      res.cookie('id', user.id)
-      
-      res.json(user)
-    } else {
-      res.status(403).json({
-        code: 403,
-        msg: "用户名或密码错误",
-      })
-    }
-  })
+  if (user) {
+    // 需要添加cookies
+    // res.cookie('id', user.id, {
+    //   signed: true
+    // })
+    res.cookie("id", user.id)
+
+    res.json(user)
+  } else {
+    res.status(403).json({
+      code: 403,
+      msg: "用户名或密码错误"
+    })
+  }
+})
 
 // 注册页面
-app.route('/register')
+app
+  .route("/register")
   .get((req, res, next) => {
     res.send(`
     <form action = "/register" method = "post">
@@ -86,23 +91,36 @@ app.route('/register')
   .post(async (req, res, next) => {
     // console.log(req.body)
     let userInfo = req.body
-    let userName = await db.get("select * from users where name=?", userInfo.name)
-    let userEmail = await db.get("select * from users where email=?", userInfo.email)
+    let userName = await db.get(
+      "select * from users where name=?",
+      userInfo.name
+    )
+    let userEmail = await db.get(
+      "select * from users where email=?",
+      userInfo.email
+    )
     if (userName) {
       res.send("用户名已使用")
     } else if (userEmail) {
       res.send("邮箱已使用")
     } else {
-      db.run('insert into users (name, email, password, title) values(?,?,?,?);', userInfo.name, userInfo.email, userInfo.password, userInfo.title)
+      db.run(
+        "insert into users (name, email, password, title) values(?,?,?,?);",
+        userInfo.name,
+        userInfo.email,
+        userInfo.password,
+        userInfo.title
+      )
       // res.send(`注册成功<br><a href = "\\">返回登陆页面</a>`)
-      res.json({msg:'注册成功', code: 200})
+      res.json({ msg: "注册成功", code: 200 })
     }
   })
 
 let changePasswordTokenMap = {}
 
 // 忘记密码
-app.route("/forget")
+app
+  .route("/forget")
   .get((req, res, next) => {
     res.end(`
     <form action="/forget" method="post">
@@ -122,24 +140,25 @@ app.route("/forget")
       // 20分钟后删除
       setTimeout(() => {
         delete changePasswordTokenMap[token]
-      }, 20 * 60 * 1000);
+      }, 20 * 60 * 1000)
 
       // let link = `http://localhost:${port}/change-password/${token}`
       let link = `http://zkylearner.top:${port}/change-password/${token}`
       res.end(`<a href = ${link}>修改密码链接</a>`)
       //发送链接
     } else {
-      res.end('请求的邮箱错误')
+      res.end("请求的邮箱错误")
     }
   })
 
 // 修改密码页面
-app.route('/change-password/:token')
+app
+  .route("/change-password/:token")
   .get((req, res, next) => {
     let token = req.params.token
     let email = changePasswordTokenMap[token]
 
-    res.set('Content-Type', 'text/html; charset=UTF-8')
+    res.set("Content-Type", "text/html; charset=UTF-8")
     if (email) {
       res.end(`
         <form action="http://localhost:${port}/change-password/${token}" method="post">
@@ -148,7 +167,7 @@ app.route('/change-password/:token')
         </form>
         `)
     } else {
-      res.end('此链接已过期，请重新请求')
+      res.end("此链接已过期，请重新请求")
     }
   })
   .post(async (req, res, next) => {
@@ -156,23 +175,42 @@ app.route('/change-password/:token')
     let email = changePasswordTokenMap[token]
     let password = req.body.password
     let userEmail = await db.get("select * from users where email=?", email)
-    res.set('Content-Type', 'text/html; charset=UTF-8')
-    
+    res.set("Content-Type", "text/html; charset=UTF-8")
+
     if (email && userEmail) {
-      await db.run('update users set password=? where email=?', password, email)
+      await db.run("update users set password=? where email=?", password, email)
       res.end(`密码修改成功<br><a href = "\\">返回登陆页面</a>`)
     } else {
-      res.end('此链接已过期，请重新请求')
+      res.end("此链接已过期，请重新请求")
     }
   })
 
 // 登出页面 清除cookie 跳转到初始页面
-app.get('/logout', (req, res, next) => {
-  res.clearCookie('id')
+app.get("/logout", (req, res, next) => {
+  res.clearCookie("id")
   res.json({
     code: 0,
-    msg: '登出成功'
+    msg: "登出成功"
   })
 })
+
+// 一言 随机返回语录中的一句话
+app.get("/yiyan", (req, res, next) => {
+  // res.json({ name: "json示例" })
+  res.json(getSentence())
+})
+
+function getSentence() {
+  const defaultContent = { content: "越自律越自由" }
+  if (!Array.isArray(sentenceList)) {
+    console.log("不是数组")
+    return defaultContent
+  }
+  const max = (sentenceList || []).length
+  const min = 0
+  const num = Math.floor(Math.random() * (max - min) + min)
+  // sentenceList[num].content.replace(/\n/g, "<br />")
+  return sentenceList[num] || defaultContent
+}
 
 module.exports = app
